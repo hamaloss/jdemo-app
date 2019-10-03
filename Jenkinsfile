@@ -36,10 +36,16 @@ node {
         sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'"
     }
 
-    stage('build image and push to repo') {
-	withCredentials([usernamePassword(credentialsId: 'region-harbor', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        	sh "./mvnw package -Pprod -DskipTests jib:build -Djib.to.image=harbor.teco.1-4.fi.teco.online/jdemo/app:latest -Djib.to.auth.username=\"$USERNAME\" -Djib.to.auth.password=\"$PASSWORD\""
-	}
+    stage('build image') {
+       	sh "./mvnw package -Pprod -DskipTests jib:dockerBuild" 
         archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+    }
+
+    stage('push image') {
+	withCredentials([usernamePassword(credentialsId: 'region-harbor', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+		sh "docker login -u $USERNAME -p $PASSWORD harbor.teco.1-4.fi.teco.online"
+		sh "docker tag app:latest harbor.teco.1-4.fi.teco.online/jdemo/app:latest"
+		sh "docker push harbor.teco.1-4.fi.teco.online/jdemo/app:latest"
+	}
     }
 }

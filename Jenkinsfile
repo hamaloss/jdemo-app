@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 node {
-    dir("/data") {
+    dir("/data/jdemo") {
 	sh "pwd"
     }
 

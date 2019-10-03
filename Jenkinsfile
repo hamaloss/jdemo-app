@@ -42,6 +42,6 @@ node {
     }
 
     stage('build image') {
-        sh "./mvnw -ntp -Pprod verify jib:dockerBuild"
+        sh "./mvnw package -Pprod -DskipTests jib:dockerBuild"
     }
 }

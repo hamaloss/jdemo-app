@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 node {
- ws("/data/jdemo/") {
+ ws("/data/jdemo/app/") {
 
     stage('checkout') {
         checkout scm

@@ -50,5 +50,6 @@ node {
 		sh "docker push harbor.teco.1-4.fi.teco.online/jdemo/app:${env.BUILD_NUMBER}"
 	}
 	sh "echo TAG=${env.BUILD_NUMBER} > build.properties"
+	archiveArtifacts artifacts: 'build.properties'
     }
 }

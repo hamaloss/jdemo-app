@@ -1,6 +1,10 @@
 #!/usr/bin/env groovy
 
 node {
+    dir("/data") {
+	sh "pwd"
+    }
+
     stage('checkout') {
         checkout scm
     }

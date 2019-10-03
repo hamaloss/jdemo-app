@@ -43,7 +43,7 @@ node {
 
     stage('push image') {
 	withCredentials([usernamePassword(credentialsId: 'region-harbor', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-		sh "docker login -u $USERNAME -p $PASSWORD harbor.teco.1-4.fi.teco.online"
+		sh "docker login -u '$USERNAME' -p $PASSWORD harbor.teco.1-4.fi.teco.online"
 		sh "docker tag app:latest harbor.teco.1-4.fi.teco.online/jdemo/app:latest"
 		sh "docker push harbor.teco.1-4.fi.teco.online/jdemo/app:latest"
 	}

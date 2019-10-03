@@ -1,8 +1,6 @@
 #!/usr/bin/env groovy
 
 node {
- ws("/data/jdemo/app/") {
-
     stage('checkout') {
         checkout scm
     }
@@ -55,5 +53,4 @@ node {
         // https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin#authentication-methods
         sh "./mvnw -ntp jib:build"
     }
-  }
 }

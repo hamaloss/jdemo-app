@@ -36,20 +36,10 @@ node {
         sh "./mvnw -ntp com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test'"
     }
 
-    stage('packaging') {
-        sh "./mvnw -ntp verify -Pprod -DskipTests"
-        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-    }
-
-    stage('build image') {
-        sh "./mvnw package -Pprod -DskipTests jib:dockerBuild"
-    }
-
-    stage('push image') {
-        def dockerImage
-	dockerImage = docker.image('app:latest')
-        docker.withRegistry('https://harbor.teco.1-4.fi.teco.online/jdemo', 'region-harbor') {
-		dockerImage.push()
+    stage('build image and push to repo') {
+	withCredentials([usernamePassword(credentialsId: 'region-harbor', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        	sh "./mvnw package -Pprod -DskipTests jib:build -Djib.to.image=harbor.teco.1-4.fi.teco.online/jdemo/app:latest -Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD"
 	}
+        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
     }
 }

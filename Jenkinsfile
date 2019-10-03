@@ -44,4 +44,14 @@ node {
     stage('build image') {
         sh "./mvnw package -Pprod -DskipTests jib:dockerBuild"
     }
+
+    stage('push image') {
+        def dockerImage
+	docker {
+		dockerImage = image('app:latest')
+	}
+        docker.withRegistry('https://harbor.teco.1-4.fi.teco.online/jdemo', 'region-harbor') {
+		dockerImage.push
+	}
+    }
 }

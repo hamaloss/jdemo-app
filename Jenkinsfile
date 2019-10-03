@@ -51,7 +51,7 @@ node {
 		dockerImage = image('app:latest')
 	}
         docker.withRegistry('https://harbor.teco.1-4.fi.teco.online/jdemo', 'region-harbor') {
-		dockerImage.push
+		dockerImage.push()
 	}
     }
 }

@@ -47,9 +47,7 @@ node {
 
     stage('push image') {
         def dockerImage
-	docker {
-		dockerImage = image('app:latest')
-	}
+	dockerImage = docker.image('app:latest')
         docker.withRegistry('https://harbor.teco.1-4.fi.teco.online/jdemo', 'region-harbor') {
 		dockerImage.push()
 	}
